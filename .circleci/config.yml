@@ -1,0 +1,143 @@
+version: 2
+
+jobs:
+  checkout_code:
+    working_directory: /home/circleci/list
+
+    docker:
+      - image: circleci/node:10.14
+
+    steps:
+      - checkout
+
+      - save_cache:
+          key   : repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+          paths :
+            - ./
+
+  node_dependencies:
+    working_directory: /home/circleci/list
+
+    docker:
+      - image: circleci/node:10.14
+
+    steps:
+      - restore_cache:
+          key: repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+
+      - restore_cache:
+          key: node-cache-{{ .Branch }}-{{ checksum "package.json" }}
+
+      - run:
+          name    : Installing npm dependencies
+          command : npm install
+
+      - save_cache:
+          key   : node-cache-{{ .Branch }}-{{ checksum "package.json" }}
+          paths :
+            - ./node_modules
+
+  tests:
+    working_directory: /home/circleci/list
+
+    steps:
+
+      - restore_cache:
+          key: repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+
+      - restore_cache:
+          key: node-cache-{{ .Branch }}-{{ checksum "package.json" }}
+
+      - run:
+          name    : Running tests
+          command : npm run test
+
+      - store_artifacts:
+          path    : test-results.xml
+          prefix  : tests
+
+      - store_artifacts:
+          path    : coverage
+          prefix  : coverage
+
+      - store_test_results:
+          path: test-results.xml
+
+      - save_cache:
+          key   : test-coverage-cache-{{ .Environment.CIRCLE_SHA1 }}
+          paths : ./coverage
+
+  test_coverage_upload:
+    working_directory: /home/circleci/list
+
+    docker:
+      - image: circleci/node:10.14
+
+    steps:
+      - restore_cache:
+          key: repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+
+      - restore_cache:
+          key: test-coverage-cache-{{ .Environment.CIRCLE_SHA1 }}
+
+      - run:
+          name    : Moving coverage badge to coverage/lcov-report
+          command : mv coverage/badge.svg coverage/lcov-report
+
+      # - run:
+      #     name    : Uploading test coverage
+      #     command : bash .circleci/aws-s3-upload.sh -b coverage.docs.contartec.com.br/dashboard -f coverage/lcov-report -d
+
+  npm_publish:
+    working_directory: /home/circleci/list
+
+    docker:
+      - image: circleci/node:10.14
+
+    steps:
+      - restore_cache:
+          key: repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+
+      - restore_cache:
+          key: node-cache-{{ .Branch }}-{{ checksum "package.json" }}
+
+      - run:
+          name    : Authenticating with registry
+          command : |
+            echo "registry=https://npm.pkg.github.com/contartec-team" > .npmrc
+            echo "//npm.pkg.github.com/:_authToken=$GITHUB_TOKEN" >> .npmrc
+
+      - run:
+          name: Publishing package
+          command: npm publish
+
+workflows:
+  version: 2
+
+  build-and-deploy:
+    jobs:
+      - checkout_code
+
+      - node_dependencies:
+          requires:
+            - checkout_code
+
+      - tests:
+          requires:
+            - node_dependencies
+
+      - test_coverage_upload:
+          requires:
+            - tests
+
+      - approval:
+          filters:
+            branches:
+              only: master
+          type: approval
+          requires:
+            - tests
+
+      # - npm_publish:
+      #     requires:
+      #       - approval
