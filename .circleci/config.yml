@@ -40,6 +40,9 @@ jobs:
   tests:
     working_directory: /home/circleci/list
 
+    docker:
+      - image: hallais/nodejs:0.8.0
+
     steps:
 
       - restore_cache:
