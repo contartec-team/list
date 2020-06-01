@@ -83,9 +83,9 @@ jobs:
       - restore_cache:
           key: test-coverage-cache-{{ .Environment.CIRCLE_SHA1 }}
 
-      - run:
-          name    : Moving coverage badge to coverage/lcov-report
-          command : mv coverage/badge.svg coverage/lcov-report
+      # - run:
+      #     name    : Moving coverage badge to coverage/lcov-report
+      #     command : mv coverage/badge.svg coverage/lcov-report
 
       # - run:
       #     name    : Uploading test coverage
