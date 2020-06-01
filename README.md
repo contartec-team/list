@@ -1,8 +1,7 @@
 Generic list class for list response patternizing
 
 [![CircleCI](https://circleci.com/gh/contartec-team/list.svg?style=shield&circle-token=fe0219e127aca0a7c19085e8e5bf9555d9ac9f98)](https://circleci.com/gh/contartec-team/list)
-
-<!-- [![codecov](https://codecov.io/gh/contartec-team/datastorage-service/branch/master/graph/badge.svg?token=C1W0GRLXB9)](https://codecov.io/gh/contartec-team/datastorage-service) -->
+[![codecov](https://codecov.io/gh/contartec-team/list/branch/master/graph/badge.svg)](https://codecov.io/gh/contartec-team/list)
 
 ## Install
 
