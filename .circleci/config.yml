@@ -141,6 +141,6 @@ workflows:
           requires:
             - tests
 
-      # - npm_publish:
-      #     requires:
-      #       - approval
+      - npm_publish:
+          requires:
+            - approval
