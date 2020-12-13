@@ -56,7 +56,7 @@
     "istanbul-cobertura-badger": "^1.3.0",
     "mocha": "^6.1.4",
     "mocha-lcov-reporter": "^1.3.0",
-    "nyc": "^14.1.1",
+    "nyc": "^15.1.0",
     "sinon": "^1.17.5",
     "sinon-as-promised": "^4.0.2",
     "sinon-chai": "^2.8.0"
