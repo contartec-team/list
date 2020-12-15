@@ -33,7 +33,7 @@
   "author": "contartec",
   "license": "MIT",
   "dependencies": {
-    "dotenv": "^1.2.0",
+    "dotenv": "^8.2.0",
     "jsdoc": "^3.6.2"
   },
   "devDependencies": {
