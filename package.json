@@ -42,7 +42,7 @@
     "chai-shallow-deep-equal": "^1.4.6",
     "chai-things": "^0.2.0",
     "chai-datetime": "^1.4.1",
-    "chai-http": "^2.0.1",
+    "chai-http": "^4.3.0",
     "co": "^4.6.0",
     "co-express": "^1.2.1",
     "co-mocha": "^1.1.3",
