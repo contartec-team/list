@@ -41,7 +41,7 @@
     "chai-as-promised": "^5.3.0",
     "chai-shallow-deep-equal": "^1.4.6",
     "chai-things": "^0.2.0",
-    "chai-datetime": "^1.4.1",
+    "chai-datetime": "^1.8.0",
     "chai-http": "^2.0.1",
     "co": "^4.6.0",
     "co-express": "^1.2.1",
