@@ -34,7 +34,7 @@
   "license": "MIT",
   "dependencies": {
     "dotenv": "^1.2.0",
-    "jsdoc": "^3.6.2"
+    "jsdoc": "^3.6.7"
   },
   "devDependencies": {
     "chai": "^3.5.0",
